@@ -8,6 +8,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.data.web.SpringDataWebAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.client.RestTemplate;
 
 @Configuration
 @AutoConfigureAfter(SpringDataWebAutoConfiguration.class)
@@ -18,6 +19,12 @@ public class CacheServiceAutoConfiguration {
     @Bean
     public CacheService cacheService(){
         return new VarnishCacheService();
+    }
+
+    @ConditionalOnMissingBean
+    @Bean
+    public RestTemplate defaultRestTemplate(){
+        return new RestTemplate();
     }
 
 }
