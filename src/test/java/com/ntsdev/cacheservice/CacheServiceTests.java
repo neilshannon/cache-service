@@ -48,12 +48,15 @@ public class CacheServiceTests {
 
 	@Test
 	public void testInvalidate(){
-		cacheService.invalidate("/product/1");
+        final String BASE_URL = "http://varnishhost"; //from src/test/resources/application-test.properties
+        final String URI_TO_INVALIDATE = "/product/1"; //from src/test/resources/application-test.properties
+
+	    cacheService.invalidate(URI_TO_INVALIDATE);
 
 		ArgumentCaptor<HttpEntity> captor = ArgumentCaptor.forClass(HttpEntity.class);
 
         verify(template).exchange(
-                    eq("http://varnishhost/product/1"), //from src/test/resources/application-test.properties
+                    eq(BASE_URL + URI_TO_INVALIDATE),
                     eq(HttpMethod.POST),
                     captor.capture(),
                     eq(String.class)
