@@ -17,6 +17,8 @@ import org.springframework.web.client.RestTemplate;
 @Service
 public class VarnishCacheService implements CacheService {
 
+    public static final String X_HTTP_METHOD_OVERRIDE = "X-HTTP-Method-Override";
+
     @Value("${cacheservice.cache.uri}")
     private String baseUri;
 
@@ -26,11 +28,12 @@ public class VarnishCacheService implements CacheService {
     @Override
     public boolean invalidate(String uri) {
         HttpHeaders headers = new HttpHeaders();
-        headers.set("X-HTTP-Method-Override", "PURGE"); //Varnish uses nonstandard HTTP method
+        headers.set(X_HTTP_METHOD_OVERRIDE, "PURGE"); //Varnish uses nonstandard HTTP method
 
         HttpEntity<String> request = new HttpEntity<>("", headers); //no body needed
 
         ResponseEntity<String> result = restTemplate.exchange(baseUri + uri, HttpMethod.POST, request, String.class);
+
         return result.getStatusCode().is2xxSuccessful();
     }
 
