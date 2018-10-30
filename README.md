@@ -9,7 +9,10 @@ HTTP header to invalidate cache entries.
 
 ## Usage
 Add the build artifact (jar) on the classpath of the application that will use the CacheService.
-Ensure that the environment variable "VARNISH_URI" is set.
+Ensure that the property "cacheservice.cache.uri" is set.
+
+Example entry in application.properties:
+`cacheservice.cache.uri=${VARNISH_URI:http://localhost}`
 
 ## Operation
 
