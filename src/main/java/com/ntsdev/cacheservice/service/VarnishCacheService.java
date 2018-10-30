@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -27,12 +26,12 @@ public class VarnishCacheService implements CacheService {
 
     @Override
     public boolean invalidate(String uri) {
-        HttpHeaders headers = new HttpHeaders();
+        var headers = new HttpHeaders();
         headers.set(X_HTTP_METHOD_OVERRIDE, "PURGE"); //Varnish uses nonstandard HTTP method
 
-        HttpEntity<String> request = new HttpEntity<>("", headers); //no body needed
+        var request = new HttpEntity<>("", headers); //no body needed
 
-        ResponseEntity<String> result = restTemplate.exchange(baseUri + uri, HttpMethod.POST, request, String.class);
+        var result = restTemplate.exchange(baseUri + uri, HttpMethod.POST, request, String.class);
 
         return result.getStatusCode().is2xxSuccessful();
     }

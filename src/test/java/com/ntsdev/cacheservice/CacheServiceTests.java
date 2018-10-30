@@ -17,8 +17,6 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.List;
-
 import static com.ntsdev.cacheservice.service.VarnishCacheService.X_HTTP_METHOD_OVERRIDE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.*;
@@ -48,12 +46,12 @@ public class CacheServiceTests {
 
 	@Test
 	public void testInvalidate(){
-        final String BASE_URL = "http://varnishhost"; //from src/test/resources/application-test.properties
-        final String URI_TO_INVALIDATE = "/product/1"; //from src/test/resources/application-test.properties
+        var BASE_URL = "http://varnishhost"; //from src/test/resources/application-test.properties
+        var URI_TO_INVALIDATE = "/product/1"; //from src/test/resources/application-test.properties
 
 	    cacheService.invalidate(URI_TO_INVALIDATE);
 
-		ArgumentCaptor<HttpEntity> captor = ArgumentCaptor.forClass(HttpEntity.class);
+		var captor = ArgumentCaptor.forClass(HttpEntity.class);
 
         verify(template).exchange(
                     eq(BASE_URL + URI_TO_INVALIDATE),
@@ -62,9 +60,9 @@ public class CacheServiceTests {
                     eq(String.class)
                 );
 
-		HttpEntity post = captor.getValue();
-		List<String> overrideHeaderValues = post.getHeaders().get(X_HTTP_METHOD_OVERRIDE);
-		String overrideMethod = overrideHeaderValues.get(0);
+		var post = captor.getValue();
+		var overrideHeaderValues = post.getHeaders().get(X_HTTP_METHOD_OVERRIDE);
+		var overrideMethod = overrideHeaderValues.get(0);
 
 		assertThat(overrideMethod).isEqualTo("PURGE");
 	}
