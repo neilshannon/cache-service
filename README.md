@@ -14,6 +14,9 @@ Ensure that the property "cacheservice.cache.uri" is set.
 Example entry in application.properties:
 `cacheservice.cache.uri=${VARNISH_URI:http://localhost}`
 
+## Prerequisities
+- JDK 11
+
 ## Operation
 
 #### To build
